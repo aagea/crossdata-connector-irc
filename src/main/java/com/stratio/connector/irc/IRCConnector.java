@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package com.stratio.connector.skeleton;
+package com.stratio.connector.irc;
 
 import org.apache.log4j.Logger;
 
-import com.stratio.connector.skeleton.engine.SkeletonMetadataEngine;
-import com.stratio.connector.skeleton.engine.SkeletonQueryEngine;
-import com.stratio.connector.skeleton.engine.SkeletonStorageEngine;
+import com.stratio.connector.irc.engine.IRCMetadataEngine;
+import com.stratio.connector.irc.engine.IRCQueryEngine;
+import com.stratio.connector.irc.engine.IRCStorageEngine;
 import com.stratio.crossdata.common.connector.ConnectorClusterConfig;
 import com.stratio.crossdata.common.connector.IConfiguration;
 import com.stratio.crossdata.common.connector.IConnector;
@@ -47,12 +47,12 @@ import com.stratio.crossdata.connectors.ConnectorApp;
  * Connector main class that launches the connector actor wrapper and implements the
  * {@link com.stratio.crossdata.common.connector.IConnector} interface.
  */
-public class SkeletonConnector implements IConnector{
+public class IRCConnector implements IConnector{
 
     /**
      * Class logger.
      */
-    private static final Logger LOG = Logger.getLogger(SkeletonConnector.class);
+    private static final Logger LOG = Logger.getLogger(IRCConnector.class);
 
     @Override
     public String getConnectorName() {
@@ -93,17 +93,17 @@ public class SkeletonConnector implements IConnector{
 
     @Override
     public IStorageEngine getStorageEngine() throws UnsupportedException {
-        return new SkeletonStorageEngine();
+        return new IRCStorageEngine();
     }
 
     @Override
     public IQueryEngine getQueryEngine() throws UnsupportedException {
-        return new SkeletonQueryEngine();
+        return new IRCQueryEngine();
     }
 
     @Override
     public IMetadataEngine getMetadataEngine() throws UnsupportedException {
-        return new SkeletonMetadataEngine();
+        return new IRCMetadataEngine();
     }
 
     /**
@@ -111,7 +111,7 @@ public class SkeletonConnector implements IConnector{
      * @param args The arguments.
      */
     public static void main(String [] args){
-        SkeletonConnector skeletonConnector = new SkeletonConnector();
+        IRCConnector skeletonConnector = new IRCConnector();
         ConnectorApp connectorApp = new ConnectorApp();
         connectorApp.startup(skeletonConnector);
     }

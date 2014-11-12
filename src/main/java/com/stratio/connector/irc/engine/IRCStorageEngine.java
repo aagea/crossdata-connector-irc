@@ -22,60 +22,45 @@
  * SOFTWARE.
  */
 
-package com.stratio.connector.skeleton.engine;
+package com.stratio.connector.irc.engine;
 
-import com.stratio.crossdata.common.connector.IMetadataEngine;
-import com.stratio.crossdata.common.data.AlterOptions;
-import com.stratio.crossdata.common.data.CatalogName;
+import java.util.Collection;
+
+import com.stratio.crossdata.common.connector.IStorageEngine;
 import com.stratio.crossdata.common.data.ClusterName;
+import com.stratio.crossdata.common.data.Row;
 import com.stratio.crossdata.common.data.TableName;
 import com.stratio.crossdata.common.exceptions.ConnectorException;
 import com.stratio.crossdata.common.exceptions.UnsupportedException;
-import com.stratio.crossdata.common.metadata.CatalogMetadata;
-import com.stratio.crossdata.common.metadata.IndexMetadata;
+import com.stratio.crossdata.common.logicalplan.Filter;
 import com.stratio.crossdata.common.metadata.TableMetadata;
+import com.stratio.crossdata.common.statements.structures.Relation;
 
 /**
- * Skeleton metadata engine implementation.
+ * Skeleton storage engine.
  */
-public class SkeletonMetadataEngine implements IMetadataEngine{
-
-    @Override
-    public void createCatalog(ClusterName targetCluster, CatalogMetadata catalogMetadata)
+public class IRCStorageEngine implements IStorageEngine{
+    @Override public void insert(ClusterName targetCluster, TableMetadata targetTable, Row row)
             throws ConnectorException {
         throw new UnsupportedException("Method not implemented");
     }
 
-    @Override
-    public void createTable(ClusterName targetCluster, TableMetadata tableMetadata)
+    @Override public void insert(ClusterName targetCluster, TableMetadata targetTable, Collection<Row> rows)
             throws ConnectorException {
         throw new UnsupportedException("Method not implemented");
     }
 
-    @Override
-    public void dropCatalog(ClusterName targetCluster, CatalogName name) throws ConnectorException {
-        throw new UnsupportedException("Method not implemented");
-    }
-
-    @Override
-    public void dropTable(ClusterName targetCluster, TableName name) throws ConnectorException {
-        throw new UnsupportedException("Method not implemented");
-    }
-
-    @Override
-    public void alterTable(ClusterName targetCluster, TableName name, AlterOptions alterOptions)
+    @Override public void delete(ClusterName targetCluster, TableName tableName, Collection<Filter> whereClauses)
             throws ConnectorException {
         throw new UnsupportedException("Method not implemented");
     }
 
-    @Override
-    public void createIndex(ClusterName targetCluster, IndexMetadata indexMetadata)
-            throws ConnectorException {
+    @Override public void update(ClusterName targetCluster, TableName tableName, Collection<Relation> assignments,
+            Collection<Filter> whereClauses) throws ConnectorException {
         throw new UnsupportedException("Method not implemented");
     }
 
-    @Override
-    public void dropIndex(ClusterName targetCluster, IndexMetadata indexMetadata) throws ConnectorException {
+    @Override public void truncate(ClusterName targetCluster, TableName tableName) throws ConnectorException {
         throw new UnsupportedException("Method not implemented");
     }
 }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.stratio.connector.skeleton.engine;
+package com.stratio.connector.irc.engine;
 
 import com.stratio.crossdata.common.connector.IQueryEngine;
 import com.stratio.crossdata.common.connector.IResultHandler;
@@ -34,7 +34,7 @@ import com.stratio.crossdata.common.result.QueryResult;
 /**
  * Skeleton query engine
  */
-public class SkeletonQueryEngine implements IQueryEngine{
+public class IRCQueryEngine implements IQueryEngine{
 
     @Override
     public QueryResult execute(LogicalWorkflow workflow) throws ConnectorException {
