@@ -24,6 +24,10 @@
 
 package com.stratio.connector.irc;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.stratio.connector.irc.engine.IRCMetadataEngine;
@@ -42,6 +46,7 @@ import com.stratio.crossdata.common.exceptions.InitializationException;
 import com.stratio.crossdata.common.exceptions.UnsupportedException;
 import com.stratio.crossdata.common.security.ICredentials;
 import com.stratio.crossdata.connectors.ConnectorApp;
+import com.stratio.irc.IRCManager;
 
 /**
  * Connector main class that launches the connector actor wrapper and implements the
@@ -56,44 +61,51 @@ public class IRCConnector implements IConnector{
 
     @Override
     public String getConnectorName() {
-        return "SkeletonConnector";
+        return "IRCConnector";
     }
 
     @Override
     public String[] getDatastoreName() {
-        return new String[]{"SkeletonDatastore"};
+        return new String[]{"IRCDatastore"};
     }
+
+    private Map<ClusterName, IRCManager> managers=new HashMap<>();
 
     @Override
     public void init(IConfiguration configuration) throws InitializationException {
-        //TODO Add init functionality. This method will be called once when the connector is launched.
-        //IConfiguration currently does not provide any external information.
+        LOG.info("IRCConnector is INIT!");
     }
 
     @Override public void connect(ICredentials credentials, ConnectorClusterConfig config) throws ConnectionException {
-        //TODO Add connect functionality. The connector should establish the connection with the underlying
-        //datastore. ICredentials is currently not supported.
-        throw new ConnectionException("Method not implemented");
+        String host=config.getOptions().get("host");
+        String login=config.getOptions().get("login");
+
+        IRCManager manager=new IRCManager(host,login);
+        try {
+            manager.connect();
+            managers.put(config.getName(),manager);
+        } catch (IOException e) {
+            throw new ConnectionException(e);
+        }
     }
 
     @Override public void close(ClusterName name) throws ConnectionException {
-        //TODO Add close functionality. The connector should close the connection with the given cluster.
-        throw new ConnectionException("Method not implemented");
+        LOG.info("Close connection " + name.toString());
+        IRCManager manager=managers.get(name);
+        manager.disconnect();
     }
 
     @Override public void shutdown() throws ExecutionException {
-        //This method is called when the user decides to stop the connector service.
-        throw new ExecutionException("Method not implemented");
+        LOG.info("Shutdown connector!");
     }
 
     @Override public boolean isConnected(ClusterName name) {
-        //TODO Add isConnected funcionality to determine whether the connector has access to a given cluster.
-        return false;
+        return managers.containsKey(name);
     }
 
     @Override
     public IStorageEngine getStorageEngine() throws UnsupportedException {
-        return new IRCStorageEngine();
+        return new IRCStorageEngine(managers);
     }
 
     @Override
@@ -103,7 +115,7 @@ public class IRCConnector implements IConnector{
 
     @Override
     public IMetadataEngine getMetadataEngine() throws UnsupportedException {
-        return new IRCMetadataEngine();
+        return new IRCMetadataEngine(managers);
     }
 
     /**
@@ -111,9 +123,9 @@ public class IRCConnector implements IConnector{
      * @param args The arguments.
      */
     public static void main(String [] args){
-        IRCConnector skeletonConnector = new IRCConnector();
+        IRCConnector ircConnector = new IRCConnector();
         ConnectorApp connectorApp = new ConnectorApp();
-        connectorApp.startup(skeletonConnector);
+        connectorApp.startup(ircConnector);
     }
 
 }

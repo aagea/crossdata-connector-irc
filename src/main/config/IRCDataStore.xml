@@ -3,22 +3,16 @@
 <DataStore>
     <!-- Name of the target datastore. Be aware that a manifest may already exists for
     the datastore of your choice. -->
-    <Name>SkeletonDataStore</Name>
+    <Name>IRCDataStore</Name>
     <Version>2.0.0</Version>
     <!-- Define the set of required properties the user will be asked for when defining
     a cluster of this datastore. -->
-    <!--
     <RequiredProperties>
         <Property>
-            <PropertyName>Hosts</PropertyName>
-            <Description>Host list with its own port. Example: [host1,host2,host3]</Description>
-        </Property>
-        <Property>
-            <PropertyName>Port</PropertyName>
-            <Description>Cassandra Port</Description>
+            <PropertyName>Host</PropertyName>
+            <Description>IRC host</Description>
         </Property>
     </RequiredProperties>
-    -->
     <!-- List of datastore behaviours -->
     <Behaviors>
         <Behavior>UPSERT_ON_INSERT</Behavior>

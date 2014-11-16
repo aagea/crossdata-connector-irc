@@ -25,6 +25,7 @@
 package com.stratio.connector.irc.engine;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.stratio.crossdata.common.connector.IStorageEngine;
 import com.stratio.crossdata.common.data.ClusterName;
@@ -35,19 +36,34 @@ import com.stratio.crossdata.common.exceptions.UnsupportedException;
 import com.stratio.crossdata.common.logicalplan.Filter;
 import com.stratio.crossdata.common.metadata.TableMetadata;
 import com.stratio.crossdata.common.statements.structures.Relation;
+import com.stratio.irc.IRCManager;
 
 /**
  * Skeleton storage engine.
  */
 public class IRCStorageEngine implements IStorageEngine{
+
+    private Map<ClusterName,IRCManager> managers;
+
+    public IRCStorageEngine(Map<ClusterName,IRCManager> managers){
+        this.managers=managers;
+    }
+
     @Override public void insert(ClusterName targetCluster, TableMetadata targetTable, Row row)
             throws ConnectorException {
-        throw new UnsupportedException("Method not implemented");
+        Object message= row.getCell("message");
+        if(message==null){
+            throw new ConnectorException("You must add message column in the insert clause.");
+        }
+        IRCManager manager= managers.get(targetCluster);
+        manager.sendMessage(targetTable.getName().getName(),message.toString());
     }
 
     @Override public void insert(ClusterName targetCluster, TableMetadata targetTable, Collection<Row> rows)
             throws ConnectorException {
-        throw new UnsupportedException("Method not implemented");
+        for(Row row:rows){
+            insert(targetCluster,targetTable,row);
+        }
     }
 
     @Override public void delete(ClusterName targetCluster, TableName tableName, Collection<Filter> whereClauses)

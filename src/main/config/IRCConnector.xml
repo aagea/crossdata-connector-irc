@@ -2,29 +2,26 @@
 <!-- This file contains the manifest for the connector. -->
 <Connector>
     <!-- Name of the connector as it will be identified in Crossdata -->
-    <ConnectorName>SkeletonConnector</ConnectorName>
+    <ConnectorName>IRCConnector</ConnectorName>
     <!-- Define the list of datastore this connector is able to access. -->
     <DataStores>
-        <DataStoreName>SkeletonDatastore</DataStoreName>
+        <DataStoreName>IRCDataStore</DataStoreName>
     </DataStores>
     <!-- Connector version -->
     <Version>0.0.1</Version>
 
     <!-- Define the set of required operations the user will be asked to input
     when attaching the connector -->
-    <!--
+
     <RequiredProperties>
         <Property>
-            <PropertyName>ConnectorProperty</PropertyName>
-            <Description>Property description</Description>
+            <PropertyName>name</PropertyName>
+            <Description>It's the Name of the bot that establish the connection</Description>
         </Property>
     </RequiredProperties>
-    -->
     <!-- Define the list of operations supported by the connector.
     Check crossdata/doc/ConnectorOperations.md for more information. -->
     <SupportedOperations>
-        <operation>CREATE_CATALOG</operation>
-        <operation>DROP_CATALOG</operation>
         <operation>CREATE_TABLE</operation>
         <operation>DROP_TABLE</operation>
         <operation>INSERT</operation>
@@ -32,5 +29,7 @@
         <operation>SELECT_OPERATOR</operation>
         <operation>SELECT_LIMIT</operation>
         <operation>FILTER_PK_EQ</operation>
+        <operation>FILTER_NON_INDEXED_EQ</operation>
+        <operation>FILTER_FULLTEXT</operation>
     </SupportedOperations>
 </Connector>
