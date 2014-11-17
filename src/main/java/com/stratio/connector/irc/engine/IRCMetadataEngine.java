@@ -26,6 +26,7 @@ package com.stratio.connector.irc.engine;
 
 import java.util.Map;
 
+import com.stratio.connector.irc.manager.IRCManager;
 import com.stratio.crossdata.common.connector.IMetadataEngine;
 import com.stratio.crossdata.common.data.AlterOptions;
 import com.stratio.crossdata.common.data.CatalogName;
@@ -36,7 +37,7 @@ import com.stratio.crossdata.common.exceptions.UnsupportedException;
 import com.stratio.crossdata.common.metadata.CatalogMetadata;
 import com.stratio.crossdata.common.metadata.IndexMetadata;
 import com.stratio.crossdata.common.metadata.TableMetadata;
-import com.stratio.irc.IRCManager;
+
 
 /**
  * Skeleton metadata engine implementation.

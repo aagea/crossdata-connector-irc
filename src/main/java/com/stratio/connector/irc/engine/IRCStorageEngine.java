@@ -27,6 +27,7 @@ package com.stratio.connector.irc.engine;
 import java.util.Collection;
 import java.util.Map;
 
+import com.stratio.connector.irc.manager.IRCManager;
 import com.stratio.crossdata.common.connector.IStorageEngine;
 import com.stratio.crossdata.common.data.ClusterName;
 import com.stratio.crossdata.common.data.Row;
@@ -36,7 +37,7 @@ import com.stratio.crossdata.common.exceptions.UnsupportedException;
 import com.stratio.crossdata.common.logicalplan.Filter;
 import com.stratio.crossdata.common.metadata.TableMetadata;
 import com.stratio.crossdata.common.statements.structures.Relation;
-import com.stratio.irc.IRCManager;
+
 
 /**
  * Skeleton storage engine.

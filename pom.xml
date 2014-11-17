@@ -49,11 +49,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.stratio</groupId>
-            <artifactId>irc-api</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.stratio.crossdata</groupId>
             <artifactId>crossdata-connector</artifactId>
             <version>${crossdata.version}</version>
@@ -116,6 +111,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>pircbot</groupId>
+            <artifactId>pircbot</artifactId>
+            <version>1.5.0</version>
         </dependency>
 
     </dependencies>

@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import com.stratio.connector.irc.engine.IRCMetadataEngine;
 import com.stratio.connector.irc.engine.IRCQueryEngine;
 import com.stratio.connector.irc.engine.IRCStorageEngine;
+import com.stratio.connector.irc.manager.IRCManager;
 import com.stratio.crossdata.common.connector.ConnectorClusterConfig;
 import com.stratio.crossdata.common.connector.IConfiguration;
 import com.stratio.crossdata.common.connector.IConnector;
@@ -46,7 +47,6 @@ import com.stratio.crossdata.common.exceptions.InitializationException;
 import com.stratio.crossdata.common.exceptions.UnsupportedException;
 import com.stratio.crossdata.common.security.ICredentials;
 import com.stratio.crossdata.connectors.ConnectorApp;
-import com.stratio.irc.IRCManager;
 
 /**
  * Connector main class that launches the connector actor wrapper and implements the
@@ -75,17 +75,31 @@ public class IRCConnector implements IConnector{
     public void init(IConfiguration configuration) throws InitializationException {
         LOG.info("IRCConnector is INIT!");
     }
-
+    private final static Object LOCK=new Object();
     @Override public void connect(ICredentials credentials, ConnectorClusterConfig config) throws ConnectionException {
-        String host=config.getOptions().get("host");
-        String login=config.getOptions().get("login");
-
-        IRCManager manager=new IRCManager(host,login);
         try {
-            manager.connect();
-            managers.put(config.getName(),manager);
-        } catch (IOException e) {
-            throw new ConnectionException(e);
+            synchronized (LOCK) {
+                if (!managers.containsKey(config.getName())) {
+                    String host = "127.0.0.1";
+                    if (config.getClusterOptions() != null && config.getClusterOptions().containsKey("host")) {
+                        host = config.getClusterOptions().get("host");
+                    }
+                    String login = "xdbot";
+                    if (config.getConnectorOptions() != null && config.getConnectorOptions().containsKey("name")) {
+                        login = config.getConnectorOptions().get("name");
+                    }
+                    LOG.info("host: " + host + " login: " + login);
+                    IRCManager manager = new IRCManager(host, login);
+                    try {
+                        manager.connect();
+                        managers.put(config.getName(), manager);
+                    } catch (Exception e) {
+                        throw new ConnectionException(e);
+                    }
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -110,7 +124,7 @@ public class IRCConnector implements IConnector{
 
     @Override
     public IQueryEngine getQueryEngine() throws UnsupportedException {
-        return new IRCQueryEngine();
+        return new IRCQueryEngine(managers);
     }
 
     @Override
